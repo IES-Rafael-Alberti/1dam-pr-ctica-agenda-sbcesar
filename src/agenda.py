@@ -31,12 +31,13 @@ OPCIONES_MENU = {1,2,3,4,5,6,7,8}
 
 
 def borrar_consola():
-    """ Limpia la consola
-    """
+    """Limpia la consola"""
+    
     if os.name == "posix":
         os.system ("clear")
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
         os.system ("cls")
+
 
 def cargar_contactos(contactos: list):
     """
@@ -45,6 +46,7 @@ def cargar_contactos(contactos: list):
     Args:
         contactos (list): Lista con los contactos
     """
+
     #TODO: Controlar los posibles problemas derivados del uso de ficheros...
     try:
         with open(RUTA_FICHERO, 'r') as fichero:
@@ -82,6 +84,7 @@ def cargar_contactos(contactos: list):
     except FileNotFoundError:
         print(f"No se encontró el archivo {NOMBRE_FICHERO}")
 
+
 def buscar_contacto(contactos: list, email: str):
     """
     recupera la posicion de un contacto con un email determinado
@@ -101,7 +104,8 @@ def buscar_contacto(contactos: list, email: str):
     
     return cont
 
-def eliminar_contacto(contactos: list, email):
+
+def eliminar_contacto(contactos: list, email: str):
     """
     Elimina un contacto de la agenda
 
@@ -109,6 +113,7 @@ def eliminar_contacto(contactos: list, email):
         contactos (list): Lista con los contactos
         email (str): Email de cada usuario
     """
+
     try:
         #TODO: Crear función buscar_contacto para recuperar la posición de un contacto con un email determinado
         pos = buscar_contacto(contactos, email)
@@ -120,6 +125,7 @@ def eliminar_contacto(contactos: list, email):
     except Exception as e:
         print(f"**Error** {e}")
         print("No se eliminó ningún contacto")
+
 
 def pedir_opcion():
     """
@@ -136,6 +142,7 @@ def pedir_opcion():
         print("*** ERROR *** - Por favor, ingrese una opción válida.")
         return -1
 
+
 def mostrar_menu():
     """Muestra el menú en la terminal"""
 
@@ -148,6 +155,7 @@ def mostrar_menu():
     print(" 6. Mostrar contactos por criterio")
     print(" 7. Mostrar la agenda completa")
     print(" 8. Salir")
+
 
 def agregar_contacto(contactos: list):
     """
@@ -173,7 +181,22 @@ def agregar_contacto(contactos: list):
     nuevo_contacto = {"nombre": nombre, "apellido": apellido, "email": email, "telefonos": telefonos}
     contactos.append(nuevo_contacto)
 
+
 def pedir_email(contactos: list) -> str:
+    """Pide el correo al usuario
+
+    Args:
+        contactos (list): Lista de contactos
+
+    Raises:
+        ValueError: Si no introduce nada
+        ValueError: Si no pone el correo correctamente
+        ValueError: Si ya esta en la agenda
+
+    Returns:
+        str: _description_
+    """
+
     email =  input("Introduce tu correo electrónico (correo@gmail.com): ")
 
     if email == "":
@@ -188,7 +211,19 @@ def pedir_email(contactos: list) -> str:
         
     return email
 
-def validar_email(contactos: list, email):
+
+def validar_email(contactos: list, email: str):
+    """Valida si el correo es apto o no
+
+    Args:
+        contactos (list): Lista de los contactos
+        email (str): Email del contacto
+
+    Raises:
+        ValueError: Si no introduce nada
+        ValueError: Si no pone el correo correctamente
+        ValueError: Si ya esta en la agenda
+    """
     
     if email == "":
         raise ValueError("el email no puede ser una cadena vacía")
@@ -200,12 +235,28 @@ def validar_email(contactos: list, email):
         if contactos[i]["email"].lower() == email.lower():
             raise ValueError("El email ya existe en la agenda")
 
+
 def pedir_telefono() -> str:
+    """Pide el telefono por la terminal
+
+    Returns:
+        str: Telefono introducido
+    """
     telefono = input("Introduce tu telefono (prefijo opcional): ")
     validar_telefono(telefono)
+
     return telefono
 
+
 def validar_telefono(telefono: str) -> bool:
+    """Valida si el telefono es correcto o no
+
+    Args:
+        telefono (str): Telefono del usuario
+
+    Returns:
+        bool: True si es apto o False si no es apto
+    """
     while True:
         try:
             if telefono == "":
@@ -276,6 +327,7 @@ def agenda(contactos: list):
             case 8:
                 print("No fuimo, salsa y picante")
 
+
 def mostrar_contacto_por_criterio(contactos: list):
     
     while True:
@@ -303,11 +355,26 @@ def mostrar_contacto_por_criterio(contactos: list):
     else:
         print("\nNo se encontraron contactos que coincidan con la búsqueda.")
     
+
 def ordenar(contactos: list):
+    """Funcion que returna los valores del nombre y apellido
+
+    Args:
+        contactos (list): Lista de contactos
+
+    Returns:
+        str: Apellido y nombre del contacto
+    """
     return contactos['apellido'], contactos['nombre']
 
-def mostrar_contactos(contactos: list):
 
+def mostrar_contactos(contactos: list):
+    """Muestra los contactos actuales
+
+    Args:
+        contactos (list): Lista de contactos
+    """
+    #Ordena los contactos alfabeticamente
     contactos_ordenados = sorted(contactos, key=ordenar)
 
     print(f"AGENDA ({len(contactos)})")
@@ -338,7 +405,15 @@ def mostrar_contactos(contactos: list):
         print(f"Teléfonos: {imprimir}")
         print("......")
 
+
 def modificar_contactos(contactos: list, email: str):
+    """Modifica los contactos segun el parametro que tu introduzcas
+
+    Args:
+        contactos (list): Lista de los contactos
+        email (str): Email del contacto
+    """
+    
     pos = buscar_contacto(contactos, email)
 
     if pos is not None:
@@ -377,9 +452,9 @@ def modificar_contactos(contactos: list, email: str):
     else:
         print("No se encontró el contacto para modificar.")
 
+
 def pulse_tecla_para_continuar():
-    """ Muestra un mensaje y realiza una pausa hasta que se pulse una tecla
-    """
+    """Muestra un mensaje y realiza una pausa hasta que se pulse una tecla"""
     print("\n")
     os.system("pause")
 
