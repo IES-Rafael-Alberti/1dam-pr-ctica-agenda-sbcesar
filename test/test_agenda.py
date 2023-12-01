@@ -2,7 +2,7 @@ import copy
 from os import path
 import pathlib
 import pytest
-from src.agenda import cargar_contactos,validar_email,pedir_email,validar_telefono
+from src.agenda import cargar_contactos,validar_email,pedir_email,validar_telefono,buscar_contacto,pedir_opcion
 
 """from ExamenU3.agenda_solucion_doc import(
     cargar_contactos,
